@@ -1,42 +1,36 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
-import {Stack} from 'expo-router';
+import { AuthContextProvider, useAuth } from '@/context/authContext';
+import { router, Slot, useRouter, useSegments } from 'expo-router';
+import React, { useEffect } from 'react';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+const MainLayout = () => {
+  const { isAuthenticated } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  useEffect(() => {
+    // check if user is authenticated
+    if (typeof isAuthenticated === undefined) return;
+    const inApp = segments[0] == "(tabs)";
+    if (isAuthenticated && !inApp) {
+      // TO DO: change to real home home
+      router.replace("/(auth)/(test)");
+
+    } else if (!isAuthenticated) {
+      // TO DO: redirect to login
+      router.replace("/(auth)/logIn");
+    }
+
+  }, [isAuthenticated])
 
   return (
-    <>
-      <Tabs
-      
-        screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-          headerShown: false,
-          tabBarButton: HapticTab,
-          tabBarBackground: TabBarBackground,
-          tabBarStyle: Platform.select({
-            ios: {
-            // Use a transparent background on iOS to show the blur effect
-              position: 'absolute',
-            },
-            default: {},
-          }),
-        }}>
-          <Tabs.Screen
-          name="index"
-          options={{
-            title: 'Home',
-            tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-          }}
-        />
-      </Tabs>
-    </>
+    <Slot />
+  )
+}
+
+export default function RootLayout() {
+  return (
+    <AuthContextProvider>
+      <MainLayout />
+    </AuthContextProvider>
   );
 }
