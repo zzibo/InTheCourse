@@ -1,7 +1,7 @@
 import { View, Text, Pressable } from 'react-native';
 import { AuthContext, AuthContextProvider, useAuth } from '@/context/authContext';
 import { router } from 'expo-router';
-
+        
 export default function HomeScreen() {
   const { logout } = useAuth();
   const handleLogout = async () => {
