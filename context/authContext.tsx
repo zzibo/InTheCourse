@@ -1,5 +1,5 @@
 import { auth, db } from "@/firebaseConfig";
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, Auth, signOut } from "firebase/auth";
 import React, { createContext, useEffect, useState, ReactNode, useContext } from "react";
 import { User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -9,7 +9,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean | undefined;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
+  logout: () => Promise<Object>;
   signUp: (
     email: string,
     password: string,
@@ -52,17 +52,25 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      // Implement login logic
+      const response = await signInWithEmailAndPassword(auth, email, password)
+      console.log("User logged in successfully")
     } catch (e) {
       console.error("Login error:", e);
     }
   };
 
-  const logout = async (): Promise<void> => {
+  const logout = async () => {
     try {
-      // Implement logout logic
+      await signOut(auth);
+      return { 
+        success: true 
+      }
     } catch (e) {
       console.error("Logout error:", e);
+      return {
+        success: false,
+        e
+      }
     }
   };
 

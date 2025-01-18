@@ -6,21 +6,30 @@ import React, { useRef, useState } from 'react'
 import { useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar';
 import LoadingLottie from '@/components/LoadingLottie';
+import { useAuth } from '@/context/authContext';
 
 const LogInPage = () => {
   const router = useRouter();
 
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
+  const emailRef = useRef('');
+  const passwordRef = useRef('');
+  const { login } = useAuth(); // Destructure the login function from context
+
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     if (!emailRef.current || !passwordRef.current) {
-      Alert.alert("Fill up all fields!")
+      Alert.alert("Fill up all fields!");
       return;
     }
-  }
 
-  const [loading, setLoading] = useState(false);
+    setLoading(true);
+    const response = await login(
+      emailRef.current,
+      passwordRef.current
+    );
+    setLoading(false);
+  }
   
   return (
     <View className="flex-1">

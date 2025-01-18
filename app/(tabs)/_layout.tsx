@@ -7,8 +7,9 @@ import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { AuthContextProvider } from "@/context/authContext";
 
-export default function TabLayout() {
+export function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
@@ -56,4 +57,12 @@ export default function TabLayout() {
       />
     </Tabs>
   );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthContextProvider>
+      <TabLayout />
+    </AuthContextProvider>
+  )
 }

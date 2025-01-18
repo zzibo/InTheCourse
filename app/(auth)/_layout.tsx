@@ -12,14 +12,11 @@ const MainLayout = () => {
     if (typeof isAuthenticated === undefined) return;
     const inApp = segments[0] == "(tabs)";
     if (isAuthenticated && !inApp) {
-      // TO DO: change to real home home
-      router.replace("/(auth)/(test)");
+      router.replace("/(tabs)");
 
     } else if (!isAuthenticated) {
-      // TO DO: redirect to login
       router.replace("/(auth)/logIn");
     }
-
   }, [isAuthenticated])
 
   return (
