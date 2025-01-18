@@ -1,33 +1,38 @@
 import { View, Text } from "react-native";
 import React from "react";
 import DetailItem from "./DetaiItem";
+import Course from "../Course";
 
-const ProfileDetails = () => {
+const ProfileDetails = ({ profile }: { profile: ProfileData }) => {
   return (
-    <View className="p-4">
-      <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+    <View className="p-4 rounded-lg h-full">
+      <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
         Profile Details
       </Text>
 
-      <DetailItem label="🎓 Major:" value="CS" />
-      <DetailItem label="📅 Year:" value="3" />
-      <DetailItem label="🏠 Hostel:" value="CAPT" />
-      <DetailItem
-        label="📝 Bio:"
-        value="Hi, I'm an aspiring software engineer. HMU if you want to do SWE mods together!"
-      />
+      <DetailItem label="🎓 Major:" value={profile.major} />
+      <DetailItem label="📅 Year:" value={profile.year.toString()} />
+      <DetailItem label="🏠 Hostel:" value={profile.hostel} />
+      <DetailItem label="📝 Bio:" value={profile.bio} />
 
       {/* Courses Section */}
-      <Text className="text-lg font-semibold text-gray-700 dark:text-gray-300 mt-4">
+      <Text className="text-lg font-semibold text-gray-700 dark:text-gray-300">
         📚 Courses Taken:
       </Text>
-      {["React Native", "Data Structures", "AI"].map((course, index) => (
-        <Text key={index} className="text-gray-600 dark:text-gray-400">
-          • {course}
-        </Text>
+      {profile.courses.map((course, index) => (
+        <Course course={course} key={index}></Course>
       ))}
     </View>
   );
 };
+
+// Define TypeScript Interface
+interface ProfileData {
+  major: string;
+  year: number;
+  hostel: string;
+  bio: string;
+  courses: string[];
+}
 
 export default ProfileDetails;
