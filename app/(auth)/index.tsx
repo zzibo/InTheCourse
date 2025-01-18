@@ -1,10 +1,10 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator, Button } from "react-native";
 import React from "react";
 
 const AuthenticationPage = () => {
   return (
-    <View>
-      <Text className="text-2xl">sign-in</Text>
+    <View className="flex-1 justify-center items-center">
+      <ActivityIndicator size="large" color = "white" />
     </View>
   );
 };
