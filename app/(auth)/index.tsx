@@ -1,10 +1,6 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView} from 'react-native-safe-area-context';
-import { Fontisto } from '@expo/vector-icons';
-
-
-
 
 const AuthenticationPage = () => {
   return (
