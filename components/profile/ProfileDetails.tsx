@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import DetailItem from "./DetaiItem";
 import Course from "../Course";
+import { ProfileData } from "./ProfileData";
 
 const ProfileDetails = ({ profile }: { profile: ProfileData }) => {
   return (
@@ -25,14 +26,5 @@ const ProfileDetails = ({ profile }: { profile: ProfileData }) => {
     </View>
   );
 };
-
-// Define TypeScript Interface
-interface ProfileData {
-  major: string;
-  year: number;
-  hostel: string;
-  bio: string;
-  courses: string[];
-}
 
 export default ProfileDetails;
