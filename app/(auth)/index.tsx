@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const SignIn = () => {
+const AuthenticationPage = () => {
   return (
     <View>
       <Text className="text-2xl">sign-in</Text>
@@ -9,4 +9,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default AuthenticationPage;
