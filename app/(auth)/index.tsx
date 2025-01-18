@@ -6,7 +6,7 @@ import { Fontisto } from '@expo/vector-icons';
 
 
 
-const SignIn = () => {
+const AuthenticationPage = () => {
   return (
     <SafeAreaView className='dark'>
       <ScrollView>
@@ -34,4 +34,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default AuthenticationPage;
