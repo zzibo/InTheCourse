@@ -1,5 +1,6 @@
 export interface ProfileData {
-  displayName: string
+  displayName: string;
+  displayPicture: string;
   major: string;
   year: number;
   hostel: string;

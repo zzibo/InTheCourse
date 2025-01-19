@@ -17,7 +17,7 @@ const ProfileDetails = ({ profile }: { profile: ProfileData }) => {
       <DetailItem label="📝 Bio:" value={profile.bio} />
 
       {/* Courses Section */}
-      <Text className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+      <Text className="text-lg font-semibold text-gray-700 dark:text-gray-300 mt-2">
         📚 Courses Taken:
       </Text>
       {profile.courses.map((course, index) => (

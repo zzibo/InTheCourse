@@ -1,17 +1,33 @@
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import ProfilePhoto from "@/components/profile/ProfilePhoto";
 import ProfileDetails from "@/components/profile/ProfileDetails";
-import { useAuth } from "@/context/authContext";
 import { db } from "@/firebaseConfig";
 import { collection, doc, getDoc } from "firebase/firestore";
 import { ProfileData } from "@/components/profile/ProfileData";
+import {
+  AuthContext,
+  AuthContextProvider,
+  useAuth,
+} from "@/context/authContext";
+import { router } from "expo-router";
 
 // Profile Component
 const Profile = () => {
   const { user } = useAuth(); // Get the current user from context
   const [profile, setProfile] = useState<ProfileData | null>(null); // State to hold the profile data
   const [loading, setLoading] = useState(true); // Loading state
+
+  const { logout } = useAuth();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      console.log("User logged out successfully");
+      router.replace("/(auth)");
+    } catch (e) {
+      console.error("Failed to log out");
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -26,6 +42,7 @@ const Profile = () => {
             const data = docSnap.data();
             setProfile({
               displayName: data.displayName,
+              displayPicture: data.displayPicture,
               major: data.major,
               year: data.year,
               hostel: data.hostel,
@@ -64,7 +81,16 @@ const Profile = () => {
 
   return (
     <View className="p-4">
-      <ProfilePhoto />
+      <View className="flex flex-row-reverse">
+        <Pressable
+          onPress={handleLogout}
+          className="p-2 bg-gray-400 rounded-md"
+        >
+          <Text>Sign out</Text>
+        </Pressable>
+      </View>
+
+      <ProfilePhoto profile={profile} />
       <ProfileDetails profile={profile} />
     </View>
   );

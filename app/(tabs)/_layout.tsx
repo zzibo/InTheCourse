@@ -29,9 +29,9 @@ export function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="chat"
+        name="matched"
         options={{
-          title: "Chat",
+          title: "Matched",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="message.badge.circle" color={color} />
           ),
@@ -64,5 +64,5 @@ export default function RootLayout() {
     <AuthContextProvider>
       <TabLayout />
     </AuthContextProvider>
-  )
+  );
 }
