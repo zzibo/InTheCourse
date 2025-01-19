@@ -11,7 +11,7 @@ import { ProfileData } from "@/components/profile/ProfileData";
 const Profile = () => {
   const { user } = useAuth(); // Get the current user from context
   const [profile, setProfile] = useState<ProfileData | null>(null); // State to hold the profile data
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true); // Page's loading state
 
   useEffect(() => {
     if (user) {
@@ -20,12 +20,13 @@ const Profile = () => {
 
       // Fetch the user's profile data
       const fetchProfileData = async () => {
-        try {
+        try { 
           const docSnap = await getDoc(userRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
             setProfile({
               displayName: data.displayName,
+              displayPicture: data.displayPicture,
               major: data.major,
               year: data.year,
               hostel: data.hostel,
@@ -49,7 +50,7 @@ const Profile = () => {
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#FF7518" />
       </View>
     );
   }
