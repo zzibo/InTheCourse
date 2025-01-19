@@ -108,9 +108,10 @@ export default function HomeScreen() {
       {stack.length > 0 ? (
         stack.map((user, index) => (
           <ProfileCard
-            key={index}
-            profile={user}
-          />
+          profile={stack[0]} // Show the top profile
+          onSwipeLeft={() => setStack((prev) => prev.slice(1))} // Remove on left swipe
+          onSwipeRight={() => setStack((prev) => prev.slice(1))} // Remove on right swipe
+        />
         ))
       ) : (
         <Text>No other users found.</Text>
