@@ -1,6 +1,6 @@
-import { AuthContextProvider, useAuth } from '@/context/authContext';
-import { router, Slot, useRouter, useSegments } from 'expo-router';
-import React, { useEffect } from 'react';
+import { AuthContextProvider, useAuth } from "@/context/authContext";
+import { router, Slot, useRouter, useSegments } from "expo-router";
+import React, { useEffect } from "react";
 
 const MainLayout = () => {
   const { isAuthenticated } = useAuth();
@@ -13,16 +13,13 @@ const MainLayout = () => {
     const inApp = segments[0] == "(tabs)";
     if (isAuthenticated && !inApp) {
       router.replace("/(tabs)");
-
     } else if (!isAuthenticated) {
-      router.replace("/(auth)/logIn");
+      router.replace("/(auth)");
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
-  return (
-    <Slot />
-  )
-}
+  return <Slot />;
+};
 
 export default function RootLayout() {
   return (

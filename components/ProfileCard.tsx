@@ -34,7 +34,6 @@ export function ProfileCard({ profile }: { profile: ProfileData }) {
             {/* Name and Age */} 
             <View className="flex-row gap-4"> 
               <Text className="text-white text-3xl">{profile.displayName}</Text>
-              <Text className="text-white text-3xl">28</Text> 
             </View> 
             <View>
                 <Text className="text-lg font-semibold text-white">🎓 Major: {profile.major}</Text>
@@ -56,27 +55,26 @@ export function ProfileCard({ profile }: { profile: ProfileData }) {
       </View> 
     </TouchableOpacity> 
 
-    <View className="mt-2 justify-end items-center relative"> 
+    <View className="mt-4 justify-end items-center relative"> 
       {/* Button Container */} 
       <View className="flex-row justify-between w-3/5 items-center pb-20"> 
         {/* Cross Button */} 
         <TouchableOpacity 
           onPress={() => console.log("Cross Pressed")} 
-          className="w-16 h-16 border-2 border-red-500 rounded-full justify-center items-center" 
+          className="w-20 h-20 border-2 border-red-500 rounded-full justify-center items-center" 
         > 
-          <Text className="text-red-500 text-2xl">❌</Text> 
+          <Text className="text-red-500 text-3xl">❌</Text> 
         </TouchableOpacity> 
  
         {/* Heart Button */} 
         <TouchableOpacity 
           onPress={() => console.log("Heart Pressed")} 
-          className="w-16 h-16 border-2 border-green-400 rounded-full justify-center items-center" 
+          className="w-20 h-20 border-2 border-green-400 rounded-full justify-center items-center" 
         > 
-          <Text className="text-#6DE585 text-2xl">💚</Text> 
+          <Text className="text-3xl">💚</Text> 
         </TouchableOpacity> 
       </View>
      </View>
     </View>
-    
   ); 
 }
