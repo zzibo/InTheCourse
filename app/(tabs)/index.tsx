@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, Image, ActivityIndicator, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/authContext";
 import { db } from "@/firebaseConfig";
@@ -75,6 +75,41 @@ export default function HomeScreen() {
     }
   }, [user]);  // Fetch liked/disliked profiles when the user changes
 
+  const checkIfMatch = async (likedUserId: string) => {
+    if (user) {
+      try {
+        // Get the current user's document reference
+        const userRef = doc(db, "users", user.uid);
+        const likedUserRef = doc(db, "users", likedUserId);
+  
+        // Fetch both users' liked lists
+        const userSnap = await getDoc(userRef);
+        const likedUserSnap = await getDoc(likedUserRef);
+  
+        if (userSnap.exists() && likedUserSnap.exists()) {
+          const userLikes = userSnap.data().liked || [];
+          const likedUserLikes = likedUserSnap.data().liked || [];
+  
+          // Check if both users like each other
+          if (userLikes.includes(likedUserId) && likedUserLikes.includes(user.uid)) {
+            // Add each other's userId to the "matches" field
+            await updateDoc(userRef, {
+              matches: arrayUnion(likedUserId),  // Add liked user's ID to current user's matches
+            });
+            await updateDoc(likedUserRef, {
+              matches: arrayUnion(user.uid),  // Add current user's ID to liked user's matches
+            });
+            return true
+            console.log("It's a match!");
+          }
+        }
+      } catch (error) {
+        return false
+        console.error("Error checking for match:", error);
+      }
+    }
+  };  
+
   const handleLike = async () => {
     if (user && stack[currentIndex]) {
       const currentProfile = stack[currentIndex];
@@ -85,6 +120,14 @@ export default function HomeScreen() {
           await updateDoc(userRef, {
             liked: arrayUnion(currentProfile.id),  // Add the profile's ID to the liked array
           });
+  
+          // Check for a match (mutual like) after the like action
+          const matched = await checkIfMatch(currentProfile.id);
+          if (matched) {
+            Alert.alert(
+              "You got a match! 😝"
+            )
+          }
   
           // Update the liked profiles state
           setLikedProfiles((prevLikedProfiles) => [...prevLikedProfiles, currentProfile.id]);

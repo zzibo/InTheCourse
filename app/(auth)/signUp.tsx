@@ -42,7 +42,7 @@ const SignUpPage = () => {
       yearRef.current,
       hostelRef.current,
       bioRef.current,
-      coursesRef.current,
+      coursesRef.current.split(" "),
     )
   }
 

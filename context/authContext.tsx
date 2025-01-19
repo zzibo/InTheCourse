@@ -19,7 +19,7 @@ interface AuthContextType {
     year: string,
     hostel: string,
     bio: string,
-    courses: string,
+    courses: string[],
   ) => Promise<Object>;
 }
 
@@ -83,7 +83,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
     year: string,
     hostel: string,
     bio: string,
-    courses: string,
+    courses: string[],
   ) => {
     try {
       const response = await createUserWithEmailAndPassword(auth, email, password);
