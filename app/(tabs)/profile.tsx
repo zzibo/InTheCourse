@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, Pressable } from "react-native";
+import { View, Text, ActivityIndicator, Pressable, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import ProfilePhoto from "@/components/profile/ProfilePhoto";
 import ProfileDetails from "@/components/profile/ProfileDetails";
@@ -11,12 +11,13 @@ import {
   useAuth,
 } from "@/context/authContext";
 import { router } from "expo-router";
+import { heightPercentageToDP } from "react-native-responsive-screen";
 
 // Profile Component
 const Profile = () => {
   const { user } = useAuth(); // Get the current user from context
   const [profile, setProfile] = useState<ProfileData | null>(null); // State to hold the profile data
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true); // Page's loading state
 
   const { logout } = useAuth();
   const handleLogout = async () => {
@@ -36,7 +37,7 @@ const Profile = () => {
 
       // Fetch the user's profile data
       const fetchProfileData = async () => {
-        try {
+        try { 
           const docSnap = await getDoc(userRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
@@ -66,7 +67,7 @@ const Profile = () => {
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#FF7518" />
       </View>
     );
   }
@@ -80,7 +81,7 @@ const Profile = () => {
   }
 
   return (
-    <View className="p-4">
+    <ScrollView>
       <View className="flex flex-row-reverse">
         <Pressable
           onPress={handleLogout}
@@ -92,7 +93,8 @@ const Profile = () => {
 
       <ProfilePhoto profile={profile} />
       <ProfileDetails profile={profile} />
-    </View>
+      <View style={{ height: heightPercentageToDP(10) }}></View>
+    </ScrollView>
   );
 };
 
