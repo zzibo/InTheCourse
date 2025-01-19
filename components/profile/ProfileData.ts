@@ -1,4 +1,5 @@
 export interface ProfileData {
+  id: string;
   displayName: string;
   displayPicture: string;
   major: string;
@@ -6,4 +7,7 @@ export interface ProfileData {
   hostel: string;
   bio: string;
   courses: string[];
+  liked: string[];
+  disliked: string[];
+  matched: string[];
 }

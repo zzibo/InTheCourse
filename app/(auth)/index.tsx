@@ -17,13 +17,13 @@ const AuthenticationPage = () => {
             Find your coursemates today!
           </Text>
 
-          {/* Sign In Button */}
+          {/* Sign Up Button */}
           <TouchableOpacity
             className="w-3/4 bg-[#FF7518] rounded-xl py-4 mt-6"
             onPress={() => router.push("/signUp")}
           >
             <Text className="text-center text-black font-semibold">
-              SIGN IN
+              SIGN UP
             </Text>
           </TouchableOpacity>
 
