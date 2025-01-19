@@ -100,6 +100,9 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
         bio,
         courses,
         userId: response.user.uid,
+        liked: [],
+        disliked: [],
+        matched: []
       });
   
       console.log("User document created successfully.");
