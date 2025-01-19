@@ -146,6 +146,26 @@ export default function HomeScreen() {
     );
   }
 
+  return (
+    <View>
+      <View className='justify-center items-center'>
+      <Image 
+        source={require("@/assets/images/front-logo.png")} 
+        className="w-[160px] h-[64px]"
+        resizeMode='contain' 
+      />
+    </View>
+      {stack.length > 0 ? (
+        stack.map((user, index) => (
+          <ProfileCard
+          profile={stack[0]} // Show the top profile
+          onSwipeLeft={() => setStack((prev) => prev.slice(1))} // Remove on left swipe
+          onSwipeRight={() => setStack((prev) => prev.slice(1))} // Remove on right swipe
+        />
+        ))
+      ) : (
+        <Text>No other users found.</Text>
+      )}
   const prevProfile = stack[prevIndex]
   const currentProfile = stack[currentIndex];
 

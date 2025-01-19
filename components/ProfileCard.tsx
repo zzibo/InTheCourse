@@ -1,10 +1,39 @@
-import React, { useState } from "react"; 
-import { Image, View, Text, TouchableOpacity } from "react-native"; 
-import DetailItem from "./profile/DetaiItem";
+import React, { useState, useRef } from "react"; 
+import { Image, View, Text, TouchableOpacity, Animated, Dimensions } from "react-native"; 
 import { ProfileData } from "./profile/ProfileData";
- 
-export function ProfileCard({ profile }: { profile: ProfileData }) {
-  const [expanded, setExpanded] = useState(false); 
+
+const { width } = Dimensions.get("window");
+
+export function ProfileCard({ profile, onSwipeLeft, onSwipeRight }: { 
+  profile: ProfileData;
+  onSwipeLeft: () => void;
+  onSwipeRight: () => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const translateX = useRef(new Animated.Value(0)).current;
+
+  const handleDislike = () => {
+    Animated.timing(translateX, {
+      toValue: -width,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      onSwipeLeft();
+      translateX.setValue(0);
+    });
+  };
+
+  const handleLike = () => {
+    Animated.timing(translateX, {
+      toValue: width,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      onSwipeRight();
+      translateX.setValue(0);
+    });
+  };
+
  
   return ( 
     <View>

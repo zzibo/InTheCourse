@@ -7,7 +7,7 @@ import { ProfileData } from "./ProfileData";
 const ProfileDetails = ({ profile }: { profile: ProfileData }) => {
   return (
     <View className="p-4 rounded-lg h-full">
-      <Text className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+      <Text className="text-2xl font-bold text-gray-900">
         Profile Details
       </Text>
 
@@ -17,7 +17,7 @@ const ProfileDetails = ({ profile }: { profile: ProfileData }) => {
       <DetailItem label="📝 Bio:" value={profile.bio} />
 
       {/* Courses Section */}
-      <Text className="text-lg font-semibold text-gray-700 dark:text-gray-300 mt-2">
+      <Text className="text-lg font-semibold text-gray-700 mt-2">
         📚 Courses Taken:
       </Text>
       {profile.courses.map((course, index) => (
