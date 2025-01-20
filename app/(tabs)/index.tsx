@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/authContext";
-import { db } from "@/firebaseConfig";
+import { db } from "../../firebaseConfig";
 import {
   collection,
   doc,
