@@ -1,20 +1,36 @@
-import { View, Text, TouchableOpacity, Image, ActivityIndicator, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/authContext";
 import { db } from "@/firebaseConfig";
-import { collection, doc, getDoc, updateDoc, arrayUnion, getDocs, query, where } from "firebase/firestore";  // Firebase functions
-import { ProfileCard} from "@/components/ProfileCard";  // Assuming you have a ProfileCard component
+import {
+  collection,
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore"; // Firebase functions
+import { ProfileCard } from "@/components/ProfileCard"; // Assuming you have a ProfileCard component
 import { ProfileData } from "@/components/profile/ProfileData";
 import LikeButtons from "@/components/LikeButtons";
 
 export default function HomeScreen() {
-  const { user } = useAuth();  // Get the current user from context
-  const [stack, setStack] = useState<ProfileData[]>([]);  // Stack of users to display
-  const [currentIndex, setCurrentIndex] = useState(0);  // Track current profile in stack
+  const { user } = useAuth(); // Get the current user from context
+  const [stack, setStack] = useState<ProfileData[]>([]); // Stack of users to display
+  const [currentIndex, setCurrentIndex] = useState(0); // Track current profile in stack
   const [prevIndex, setPreviousIndex] = useState(-1);
-  const [likedProfiles, setLikedProfiles] = useState<string[]>([]);  // Profiles that the user has liked
-  const [dislikedProfiles, setDislikedProfiles] = useState<string[]>([]);  // Profiles that the user has disliked
-  const [loading, setLoading] = useState(true);  // Loading state
+  const [likedProfiles, setLikedProfiles] = useState<string[]>([]); // Profiles that the user has liked
+  const [dislikedProfiles, setDislikedProfiles] = useState<string[]>([]); // Profiles that the user has disliked
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     // Fetch users excluding the current user
@@ -22,7 +38,7 @@ export default function HomeScreen() {
       if (user) {
         try {
           const usersRef = collection(db, "users");
-          const q = query(usersRef, where("userId", "!=", user.uid));  // Query to exclude the current user
+          const q = query(usersRef, where("userId", "!=", user.uid)); // Query to exclude the current user
           const querySnapshot = await getDocs(q);
 
           const users: ProfileData[] = [];
@@ -43,21 +59,21 @@ export default function HomeScreen() {
             });
           });
 
-          setStack(users);  // Set the stack of users
+          setStack(users); // Set the stack of users
         } catch (error) {
           console.error("Error fetching users:", error);
         } finally {
-          setLoading(false);  // Stop loading
+          setLoading(false); // Stop loading
         }
       }
     };
 
     fetchUsers();
-  }, [user]);  // Runs when the user changes
+  }, [user]); // Runs when the user changes
 
   useEffect(() => {
     if (user) {
-      const userRef = doc(db, "users", user.uid);  // Get the current user's document reference
+      const userRef = doc(db, "users", user.uid); // Get the current user's document reference
       const fetchUserPreferences = async () => {
         try {
           const docSnap = await getDoc(userRef);
@@ -73,7 +89,7 @@ export default function HomeScreen() {
 
       fetchUserPreferences();
     }
-  }, [user]);  // Fetch liked/disliked profiles when the user changes
+  }, [user]); // Fetch liked/disliked profiles when the user changes
 
   const checkIfMatch = async (likedUserId: string) => {
     if (user) {
@@ -81,34 +97,37 @@ export default function HomeScreen() {
         // Get the current user's document reference
         const userRef = doc(db, "users", user.uid);
         const likedUserRef = doc(db, "users", likedUserId);
-  
+
         // Fetch both users' liked lists
         const userSnap = await getDoc(userRef);
         const likedUserSnap = await getDoc(likedUserRef);
-  
+
         if (userSnap.exists() && likedUserSnap.exists()) {
           const userLikes = userSnap.data().liked || [];
           const likedUserLikes = likedUserSnap.data().liked || [];
-  
+
           // Check if both users like each other
-          if (userLikes.includes(likedUserId) && likedUserLikes.includes(user.uid)) {
+          if (
+            userLikes.includes(likedUserId) &&
+            likedUserLikes.includes(user.uid)
+          ) {
             // Add each other's userId to the "matches" field
             await updateDoc(userRef, {
-              matches: arrayUnion(likedUserId),  // Add liked user's ID to current user's matches
+              matches: arrayUnion(likedUserId), // Add liked user's ID to current user's matches
             });
             await updateDoc(likedUserRef, {
-              matches: arrayUnion(user.uid),  // Add current user's ID to liked user's matches
+              matches: arrayUnion(user.uid), // Add current user's ID to liked user's matches
             });
-            return true
+            return true;
             console.log("It's a match!");
           }
         }
       } catch (error) {
-        return false
+        return false;
         console.error("Error checking for match:", error);
       }
     }
-  };  
+  };
 
   const handleLike = async () => {
     if (user && stack[currentIndex]) {
@@ -116,21 +135,22 @@ export default function HomeScreen() {
       // Make sure currentProfile.id is defined
       if (currentProfile.id) {
         try {
-          const userRef = doc(db, "users", user.uid);  // Get the current user's document reference
+          const userRef = doc(db, "users", user.uid); // Get the current user's document reference
           await updateDoc(userRef, {
-            liked: arrayUnion(currentProfile.id),  // Add the profile's ID to the liked array
+            liked: arrayUnion(currentProfile.id), // Add the profile's ID to the liked array
           });
-  
+
           // Check for a match (mutual like) after the like action
           const matched = await checkIfMatch(currentProfile.id);
           if (matched) {
-            Alert.alert(
-              "You got a match! 😝"
-            )
+            Alert.alert("You got a match! 😝");
           }
-  
+
           // Update the liked profiles state
-          setLikedProfiles((prevLikedProfiles) => [...prevLikedProfiles, currentProfile.id]);
+          setLikedProfiles((prevLikedProfiles) => [
+            ...prevLikedProfiles,
+            currentProfile.id,
+          ]);
         } catch (error) {
           console.error("Error updating liked field:", error);
         }
@@ -141,20 +161,23 @@ export default function HomeScreen() {
     // Move to the next profile after action
     nextProfile();
   };
-  
+
   const handleDislike = async () => {
     if (user && stack[currentIndex]) {
       const currentProfile = stack[currentIndex];
       // Make sure currentProfile.id is defined
       if (currentProfile.id) {
         try {
-          const userRef = doc(db, "users", user.uid);  // Get current user's document reference
+          const userRef = doc(db, "users", user.uid); // Get current user's document reference
           await updateDoc(userRef, {
-            disliked: arrayUnion(currentProfile.id),  // Add the profile's ID to the disliked array
+            disliked: arrayUnion(currentProfile.id), // Add the profile's ID to the disliked array
           });
-  
+
           // Update the disliked profiles state
-          setDislikedProfiles((prevDislikedProfiles) => [...prevDislikedProfiles, currentProfile.id]);
+          setDislikedProfiles((prevDislikedProfiles) => [
+            ...prevDislikedProfiles,
+            currentProfile.id,
+          ]);
         } catch (error) {
           console.error("Error updating disliked field:", error);
         }
@@ -165,10 +188,10 @@ export default function HomeScreen() {
     // Move to the next profile after action
     nextProfile();
   };
-  
+
   const nextProfile = () => {
     // Increment the current index to show the next profile
-    setPreviousIndex(currentIndex)
+    setPreviousIndex(currentIndex);
     setCurrentIndex((prevIndex) => {
       const nextIndex = prevIndex + 1;
 
@@ -189,27 +212,7 @@ export default function HomeScreen() {
     );
   }
 
-  return (
-    <View>
-      <View className='justify-center items-center'>
-      <Image 
-        source={require("@/assets/images/front-logo.png")} 
-        className="w-[160px] h-[64px]"
-        resizeMode='contain' 
-      />
-    </View>
-      {stack.length > 0 ? (
-        stack.map((user, index) => (
-          <ProfileCard
-          profile={stack[0]} // Show the top profile
-          onSwipeLeft={() => setStack((prev) => prev.slice(1))} // Remove on left swipe
-          onSwipeRight={() => setStack((prev) => prev.slice(1))} // Remove on right swipe
-        />
-        ))
-      ) : (
-        <Text>No other users found.</Text>
-      )}
-  const prevProfile = stack[prevIndex]
+  const prevProfile = stack[prevIndex];
   const currentProfile = stack[currentIndex];
 
   if (prevProfile === currentProfile) {
@@ -222,14 +225,21 @@ export default function HomeScreen() {
             resizeMode="contain"
           />
         </View>
-        <Text className="font-bold text-2xl text-[#FF7518]">No other users found.</Text>
-        <Text className="font-bold text-2xl text-[#FF7518]">Come back later!</Text>
+        <Text className="font-bold text-2xl text-[#FF7518]">
+          No other users found.
+        </Text>
+        <Text className="font-bold text-2xl text-[#FF7518]">
+          Come back later!
+        </Text>
       </View>
-    )
+    );
   }
 
   // Skip profiles that are already liked or disliked
-  if (likedProfiles.includes(currentProfile.id) || dislikedProfiles.includes(currentProfile.id)) {
+  if (
+    likedProfiles.includes(currentProfile.id) ||
+    dislikedProfiles.includes(currentProfile.id)
+  ) {
     nextProfile();
   }
 
