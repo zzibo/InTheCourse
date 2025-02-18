@@ -1,50 +1,105 @@
-# Welcome to your Expo app 👋
+# In-The-Course
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application built with Expo for course matching and student connections at universities. Think Tinder, but for finding study buddies in your courses!
 
-## Get started
+## Prerequisites
 
-1. Install dependencies
+- Node.js (>= 14.0.0)
+- npm or yarn
+- Expo CLI (`npm install -g expo-cli`)
+- iOS Simulator (for Mac) or Android Studio (for Android development)
+- Firebase account
 
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/zzibo/In-The-Course.git
+   cd In-The-Course
+   ```
+
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Create a Firebase configuration:
+   - Create a new project in [Firebase Console](https://console.firebase.google.com)
+   - Enable Authentication and Firestore
+   - Create a file named `firebaseConfig.tsx` in the root directory with your Firebase configuration:
 
-   ```bash
-    npx expo start
+   ```typescript
+   import { initializeApp } from 'firebase/app';
+   import { getAuth } from 'firebase/auth';
+   import { getFirestore } from 'firebase/firestore';
+
+   const firebaseConfig = {
+     apiKey: "your-api-key",
+     authDomain: "your-auth-domain",
+     projectId: "your-project-id",
+     storageBucket: "your-storage-bucket",
+     messagingSenderId: "your-messaging-sender-id",
+     appId: "your-app-id"
+   };
+
+   const app = initializeApp(firebaseConfig);
+   export const auth = getAuth(app);
+   export const db = getFirestore(app);
    ```
 
-In the output, you'll find options to open the app in a
+## Running the Application
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+1. Start the development server:
+   ```bash
+   npm start
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+2. Run on specific platforms:
+   ```bash
+   # For iOS
+   npm run ios
 
-## Get a fresh project
+   # For Android
+   npm run android
 
-When you're ready, run:
+   # For web
+   npm run web
+   ```
 
-```bash
-npm run reset-project
+## Tech Stack
+
+- React Native
+- Expo
+- Firebase (Authentication & Firestore)
+- TailwindCSS (via NativeWind)
+- TypeScript
+
+## Project Structure
+
+```
+In-The-Course/
+├── app/                  # Main application screens
+├── components/          # Reusable components
+├── constants/          # App constants
+├── context/           # React Context providers
+├── hooks/            # Custom React hooks
+└── assets/          # Images and other static assets
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Features
 
-## Learn more
+- User authentication
+- Profile management
+- Course matching
+- Student networking
+- Swipe interface for matching
+- Detailed student profiles
+- Major and year filtering
 
-To learn more about developing your project with Expo, look at the following resources:
+## Important Note
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+The `firebaseConfig.tsx` file is not included in the repository for security reasons. You'll need to create your own Firebase project and add the configuration as described in the installation steps.
 
-## Join the community
+## License
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is licensed under the MIT License.
